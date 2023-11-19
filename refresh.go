@@ -23,9 +23,7 @@ func main() {
 			}
 		}
 
-		fmt.Println("Changing refresh rate from " + ref + " to " + toRef + "...")
-
-		cmd = exec.Command("cmd", "/C", "csr.exe", fmt.Sprintf("/f=%s", toRef), "/d=0")
+		cmd = exec.Command("cmd", "/C", "bin/csr.exe", fmt.Sprintf("/f=%s", toRef), "/d=0")
 		if err := cmd.Run(); err != nil {
 			fmt.Println("Error changing refresh rate: " + err.Error())
 			return
