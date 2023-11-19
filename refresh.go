@@ -1,0 +1,55 @@
+package main
+
+import (
+	"fmt"
+	"os/exec"
+	"runtime"
+	"strings"
+
+	"github.com/gen2brain/beeep"
+)
+
+var AVAILABLE_REFRESH_RATES = []string{"60", "144"} // Change this to your available refresh rates
+
+func main() {
+	var cmd *exec.Cmd
+	if runtime.GOOS == "windows" {
+		var ref string = getCurrentRefreshRate()
+		var toRef string = AVAILABLE_REFRESH_RATES[0]
+		for _, v := range AVAILABLE_REFRESH_RATES {
+			if !strings.Contains(ref, v) {
+				toRef = v
+				break
+			}
+		}
+
+		fmt.Println("Changing refresh rate from " + ref + " to " + toRef + "...")
+
+		cmd = exec.Command("cmd", "/C", "csr.exe", fmt.Sprintf("/f=%s", toRef), "/d=0")
+		if err := cmd.Run(); err != nil {
+			fmt.Println("Error changing refresh rate: " + err.Error())
+			return
+		}
+		ref = getCurrentRefreshRate()
+		sendNotification(ref)
+	}
+}
+
+func getCurrentRefreshRate() string {
+	cmd := exec.Command("cmd", "/C", "wmic", "PATH", "Win32_videocontroller", "get", "currentrefreshrate", "/value")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		return "unknown"
+	}
+
+	outputString := string(out)
+	lines := strings.Split(outputString, "\n")
+	return strings.TrimSpace(strings.SplitN(lines[5], "=", 2)[1]) + "Hz"
+}
+
+func sendNotification(ref string) {
+	err := beeep.Alert("Refresh Rate Changed", "Refresh Rate: "+ref, "C:\\Program Files\\Go\\bin\\refresh.png")
+	if err != nil {
+		panic(err)
+	}
+}
