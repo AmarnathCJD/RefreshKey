@@ -37,4 +37,3 @@ if %refresh%==144 (
 ## License
 
 This script is provided under the [MIT License](https://opensource.org/licenses/MIT).
-```
