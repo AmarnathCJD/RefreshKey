@@ -1,5 +1,3 @@
-Certainly! Here's a complete README.md file with the provided content formatted using Markdown:
-
 ```markdown
 # Hotkey Refresh Rate Changer
 
@@ -13,14 +11,12 @@ This script allows you to toggle between available refresh rates using a hotkey.
 
 3. Right-click on the right pane, select `New > String Value`, and name the new string value `ShellExecute`.
 
-4. Double-click on the `ShellExecute` value and enter the full path to the `runcsr.vbs` script. For example:
-   ```
-   C:\path\to\runcsr.vbs
-   ```
+4. Double-click on the `ShellExecute` value and enter the full path to the `runcsr.vbs` script.
 
 5. Close the Registry Editor.
 
 After making these changes, the `runcsr.vbs` script should be executed when the specified hotkey (AppKey 18) is pressed.
+```
 
 ## Script Details
 
@@ -36,9 +32,9 @@ if %refresh%==144 (
 )
 ```
 
+### (c) RoseLoverX
+
 ## License
 
 This script is provided under the [MIT License](https://opensource.org/licenses/MIT).
 ```
-
-Feel free to use this content as a starting point for your GitHub README.md file. If you have any further questions or need additional assistance, please let me know!
