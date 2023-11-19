@@ -2,12 +2,16 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 
 	"github.com/gen2brain/beeep"
 )
+
+var wd, _ = os.Getwd()
 
 var AVAILABLE_REFRESH_RATES = []string{"60", "144"} // Change this to your available refresh rates
 
@@ -23,7 +27,9 @@ func main() {
 			}
 		}
 
-		cmd = exec.Command("cmd", "/C", "bin/csr.exe", fmt.Sprintf("/f=%s", toRef), "/d=0")
+		csrPath := filepath.Join(wd, "bin", "csr.exe")
+
+		cmd = exec.Command("cmd", "/C", csrPath, fmt.Sprintf("/f=%s", toRef), "/d=0")
 		if err := cmd.Run(); err != nil {
 			fmt.Println("Error changing refresh rate: " + err.Error())
 			return
@@ -46,7 +52,7 @@ func getCurrentRefreshRate() string {
 }
 
 func sendNotification(ref string) {
-	err := beeep.Alert("Refresh Rate Changed", "Refresh Rate: "+ref, "C:\\Program Files\\Go\\bin\\refresh.png")
+	err := beeep.Alert("Refresh Rate Changed", "Refresh Rate: "+ref, filepath.Join(wd, "assets", "refresh.png"))
 	if err != nil {
 		panic(err)
 	}
